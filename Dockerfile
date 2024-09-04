@@ -55,24 +55,24 @@ COPY --from=android-builder /usr/local/gradle-${GRADLE_VERSION}-bin.zip /root/.g
 RUN echo 'echo Echo Qt Android Project Build Instructions' >> /root/.bashrc
 RUN echo 'echo 1. Build the project' >> /root/.bashrc
 RUN echo 'echo Navigate to the project directory inside the container and compile the project:' >> /root/.bashrc
-RUN echo 'echo cd /workspace/your-project-name' >> /root/.bashrc
+RUN echo 'echo \"cd /workspace/your-project-name\"' >> /root/.bashrc
 RUN echo 'echo' >> /root/.bashrc
 RUN echo 'echo Create a build directory' >> /root/.bashrc
-RUN echo 'echo mkdir -p build' >> /root/.bashrc
-RUN echo 'echo cd build' >> /root/.bashrc
+RUN echo 'echo \"mkdir -p build\"' >> /root/.bashrc
+RUN echo 'echo \"cd build\"' >> /root/.bashrc
 RUN echo 'echo' >> /root/.bashrc
 RUN echo 'echo For qmake users' >> /root/.bashrc
-RUN echo 'echo qmake ../ -spec android-clang ANDROID_ABIS=\"arm64-v8a\" \"CONFIG+=release\"' >> /root/.bashrc
-RUN echo 'echo make -j4' >> /root/.bashrc
-RUN echo 'echo make INSTALL_ROOT=/workspace/your-project-name/build/<your-project-name>-build install' >> /root/.bashrc
+RUN echo 'echo \"qmake ../ -spec android-clang ANDROID_ABIS=\"arm64-v8a\" \"CONFIG+=release\" \"' >> /root/.bashrc
+RUN echo 'echo \"make -j4\"' >> /root/.bashrc
+RUN echo 'echo \"make INSTALL_ROOT=/workspace/your-project-name/build/<your-project-name>-build install\"' >> /root/.bashrc
 RUN echo 'echo' >> /root/.bashrc
 RUN echo 'echo For CMake users' >> /root/.bashrc
-RUN echo 'echo cd /workspace/your-project-name' >> /root/.bashrc
-RUN echo 'echo cmake --build ./build --target all' >> /root/.bashrc
+RUN echo 'echo \"cd /workspace/your-project-name\"' >> /root/.bashrc
+RUN echo 'echo \"cmake --build ./build --target all\"' >> /root/.bashrc
 RUN echo 'echo' >> /root/.bashrc
 RUN echo 'echo 2. Generate the APK' >> /root/.bashrc
 RUN echo 'echo After a successful build, use the androiddeployqt tool to package the project as an APK file:' >> /root/.bashrc
-RUN echo 'echo androiddeployqt --input android-libYourProjectName.so-deployment-settings.json --output /workspace/your-project-name/build/<your-project-name>-build --android-platform android-31 --jdk /usr/local/jdk8' >> /root/.bashrc
+RUN echo 'echo \"androiddeployqt --input android-libYourProjectName.so-deployment-settings.json --output /workspace/your-project-name/build/<your-project-name>-build --android-platform android-31 --jdk /usr/local/jdk8\"' >> /root/.bashrc
 RUN echo 'echo' >> /root/.bashrc
 RUN echo 'echo The generated APK file will be located in the /workspace/your-project-name/build/<your-project-name>-build directory.' >> /root/.bashrc
 RUN echo 'echo' >> /root/.bashrc
