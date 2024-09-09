@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 #接受一个传参
 
-ARG QT_VERSION=6.6.3
+ARG QT_VERSION=5.15.2
 ARG QT_ARCH=wasm_singlethread
 ARG PIP_MIRROR=https://pypi.tuna.tsinghua.edu.cn/simple
 
@@ -79,7 +79,7 @@ RUN apt-get autoremove -y && \
     /usr/share/locale/*/LC_MESSAGES/*.mo 
 
 # 安装emsdk
-ARG EM_VERSION=3.1.37
+ARG EM_VERSION=1.39.8
 RUN git clone https://github.com/emscripten-core/emsdk.git
 
 RUN cd emsdk && ./emsdk install ${EM_VERSION} && ./emsdk activate ${EM_VERSION}
@@ -87,7 +87,7 @@ RUN cd emsdk && ./emsdk install ${EM_VERSION} && ./emsdk activate ${EM_VERSION}
 # 步骤三 构建最终镜像
 FROM scratch
 
-ARG QT_VERSION=6.6.3
+ARG QT_VERSION=5.15.2
 
 LABEL maintainer="liyaosong <yslids@isoftstone.com>"
 
