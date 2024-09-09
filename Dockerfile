@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 #接受一个传参
 
 ARG QT_VERSION=5.15.2
-ARG QT_ARCH=wasm_singlethread
+ARG QT_ARCH=wasm_32
 ARG PIP_MIRROR=https://pypi.tuna.tsinghua.edu.cn/simple
 
 # 安装aqtinstall和Qt的先决条件
