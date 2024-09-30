@@ -52,9 +52,7 @@ LABEL version="${QT_VERSION}"
 
 LABEL description="Qt version ${QT_VERSION}."
 
-COPY --from=Qt / /
-
-# 设置Qt环境变量,emsdk环境变量
+# 设置Qt环境变量
 
 ENV QT_DIR=/home/Qt/${QT_VERSION}/gcc_64
 
