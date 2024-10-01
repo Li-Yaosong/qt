@@ -47,19 +47,21 @@ COPY --from=final / /
 ARG QT_VERSION=5.12.12
 
 LABEL maintainer="liyaosong <liyaosong1@qq.com>"
-
 LABEL version="${QT_VERSION}"
-
 LABEL description="Qt version ${QT_VERSION}."
+# 创建用户并指定 home 目录
+RUN useradd -m -d /home/Qt -s /bin/bash Qt && \
+    chown -R Qt:Qt /home/Qt
+
+USER Qt
+
+WORKDIR /home/Qt
 
 # 设置Qt环境变量
 
 ENV QT_DIR=/home/Qt/${QT_VERSION}/gcc_64
-
 ENV PATH=$QT_DIR/bin:$PATH
-
 ENV LD_LIBRARY_PATH=$QT_DIR/lib
-
 ENV DISPLAY=host.docker.internal:0
 
-CMD ["bash"]
+CMD ["qmake"]
