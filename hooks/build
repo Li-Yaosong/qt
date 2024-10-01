@@ -5,4 +5,7 @@ export DOCKER_BUILDKIT=1
 
 # 设置 Buildx Builder 并启用 sbom 和 provenance
 docker buildx create --use
-docker buildx build --sbom=true --provenance=true -t $IMAGE_NAME:$DOCKER_TAG .
+# 登录 Docker Hub
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+docker buildx build --sbom=true --provenance=true -t $IMAGE_NAME . --push
