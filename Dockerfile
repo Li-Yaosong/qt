@@ -3,7 +3,7 @@ FROM liyaosong/aqtinstall AS qt-builder
 
 ARG QT_VERSION=6.8.1
 RUN aqt install-qt linux desktop ${QT_VERSION} linux_gcc_64  --modules all --outputdir /Qt
-RUN aqt install-tool linux desktop tools_qtcreator --outputdir /Qt
+# RUN aqt install-tool linux desktop tools_qtcreator --outputdir /Qt
 
 
 FROM liyaosong/ubuntu:22.04 AS final
@@ -12,7 +12,7 @@ COPY --from=qt-builder /Qt /home/Qt
 # 安装Qt的先决条件
 
 RUN apt-get update && apt-get install -y git \
-
+    cmake \
     build-essential \
     libglib2.0-0 \
     libgl1-mesa-dev \
