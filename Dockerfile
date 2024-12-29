@@ -2,7 +2,7 @@
 FROM liyaosong/aqtinstall AS qt-builder
 
 ARG QT_VERSION=6.8.1
-RUN aqt install-qt linux desktop ${QT_VERSION} gcc_64  --modules all --outputdir /Qt
+RUN aqt install-qt linux desktop ${QT_VERSION} linux_gcc_64  --modules all --outputdir /Qt
 RUN aqt install-tool linux desktop tools_qtcreator --outputdir /Qt
 
 
