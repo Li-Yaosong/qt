@@ -3,6 +3,7 @@ FROM liyaosong/aqtinstall AS qt-builder
 
 ARG QT_VERSION=6.8.1
 ARG QT_ARCH=linux_gcc_64
+SHELL ["/bin/bash", "-c"]
 RUN aqt install-qt linux desktop ${QT_VERSION} ${QT_ARCH}  \
     -m $(for mod in $(aqt list-qt linux desktop --modules ${QT_VERSION} ${QT_ARCH}); \
     do [[ "$mod" != *debug_info* ]] && echo -n "$mod "; done) --outputdir /Qt
