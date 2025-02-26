@@ -7,7 +7,6 @@ SHELL ["/bin/bash", "-c"]
 RUN aqt install-qt linux desktop ${QT_VERSION} ${QT_ARCH}  \
     -m $(for mod in $(aqt list-qt linux desktop --modules ${QT_VERSION} ${QT_ARCH}); \
     do [[ "$mod" != *debug_info* ]] && echo -n "$mod "; done) --outputdir /Qt
-# RUN aqt install-tool linux desktop tools_qtcreator --outputdir /Qt
 
 
 FROM liyaosong/ubuntu:22.04 AS final
@@ -64,7 +63,7 @@ WORKDIR /home/Qt
 # 设置Qt环境变量
 
 ENV QT_DIR=/home/Qt/${QT_VERSION}/gcc_64
-ENV QTC_DIR=/home/Qt/Tools/QtCreator
+ENV PATH=$QT_DIR/bin:$PATH
 ENV LD_LIBRARY_PATH=$QT_DIR/lib
 ENV DISPLAY=host.docker.internal:0
 
