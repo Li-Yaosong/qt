@@ -1,7 +1,7 @@
 # 步骤一 下载Qt
 FROM liyaosong/aqtinstall AS qt-builder
 
-ARG QT_VERSION=6.8.1
+ARG QT_VERSION=6.8.2
 ARG QT_ARCH=linux_gcc_64
 SHELL ["/bin/bash", "-c"]
 RUN aqt install-qt linux desktop ${QT_VERSION} ${QT_ARCH}  \
@@ -47,7 +47,7 @@ FROM scratch
 
 COPY --from=final / /
 
-ARG QT_VERSION=6.8.1
+ARG QT_VERSION=6.8.2
 
 LABEL maintainer="liyaosong <liyaosong1@qq.com>"
 LABEL version="${QT_VERSION}"
