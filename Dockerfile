@@ -63,16 +63,16 @@ LABEL maintainer="liyaosong <liyaosong1@qq.com>"
 LABEL version="${QT_VERSION}"
 LABEL description="Qt version ${QT_VERSION}."
 # 创建用户并指定 home 目录
-RUN useradd -m -d /home/Qt -s /bin/bash Qt && \
-    chown -R Qt:Qt /home/Qt
+RUN useradd -m -d /home/qt -s /bin/bash qt && \
+    chown -R qt:qt /home/qt
 
-USER Qt
+USER qt
 
-WORKDIR /home/Qt
+WORKDIR /home/qt
 
 # 设置Qt环境变量
 
-ENV QT_DIR=/home/Qt/${QT_VERSION}/gcc_64
+ENV QT_DIR=/home/qt/${QT_VERSION}/gcc_64
 ENV PATH=$QT_DIR/bin:$PATH
 ENV LD_LIBRARY_PATH=$QT_DIR/lib
 ENV DISPLAY=host.docker.internal:0
