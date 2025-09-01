@@ -3,11 +3,21 @@ FROM liyaosong/aqtinstall AS qt-builder
 
 ARG QT_VERSION=6.8.3
 ARG QT_ARCH=linux_gcc_64
-SHELL ["/bin/bash", "-c"]
-RUN aqt install-qt linux desktop ${QT_VERSION} ${QT_ARCH}  \
-    -m $(for mod in $(aqt list-qt linux desktop --modules ${QT_VERSION} ${QT_ARCH}); \
-    do [[ "$mod" != *debug_info* ]] && echo -n "$mod "; done) --outputdir /Qt
+ARG QT_HOST=linux
 
+SHELL ["/bin/bash", "-c"]
+
+RUN echo '#!/bin/bash' >> /install-qt.sh && \
+    echo 'if [ `uname -m` == "aarch64" ]; then' >> /install-qt.sh && \
+    echo '    export QT_ARCH=linux_gcc_arm64' >> /install-qt.sh && \
+    echo '    export QT_HOST=linux_arm64' >> /install-qt.sh && \
+    echo 'fi' >> /install-qt.sh && \
+    echo 'echo Installing Qt ${QT_VERSION} for ${QT_ARCH} on ${QT_HOST}' >> /install-qt.sh && \
+    echo 'aqt install-qt ${QT_HOST} desktop ${QT_VERSION} ${QT_ARCH} \' >> /install-qt.sh && \
+    echo '-m $(for mod in $(aqt list-qt ${QT_HOST} desktop --modules ${QT_VERSION} ${QT_ARCH}); \' >> /install-qt.sh && \
+    echo 'do [[ "$mod" != *debug_info* ]] && echo -n "$mod "; done) --outputdir /Qt' >> /install-qt.sh
+
+RUN chmod +x /install-qt.sh && /install-qt.sh
 
 FROM liyaosong/ubuntu:22.04 AS final
 
