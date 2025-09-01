@@ -53,6 +53,14 @@ RUN apt-get autoremove -y && \
     /usr/share/doc/*/*.txt \
     /usr/share/locale/*/LC_MESSAGES/*.mo 
 
+# 创建用户并指定 home 目录
+RUN useradd -m -d /home/qt -s /bin/bash qt && \
+    chown -R qt:qt /home/qt
+
+USER qt
+
+WORKDIR /home/qt
+
 FROM scratch
 
 COPY --from=final / /
@@ -62,13 +70,7 @@ ARG QT_VERSION=6.8.3
 LABEL maintainer="liyaosong <liyaosong1@qq.com>"
 LABEL version="${QT_VERSION}"
 LABEL description="Qt version ${QT_VERSION}."
-# 创建用户并指定 home 目录
-RUN useradd -m -d /home/qt -s /bin/bash qt && \
-    chown -R qt:qt /home/qt
 
-USER qt
-
-WORKDIR /home/qt
 
 # 设置Qt环境变量
 
