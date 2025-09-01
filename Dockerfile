@@ -1,25 +1,26 @@
 # 步骤一 下载Qt
 FROM liyaosong/aqtinstall AS qt-builder
 
+ARG TARGETARCH
 ARG QT_VERSION=6.8.3
 ARG QT_ARCH=linux_gcc_64
 ARG QT_HOST=linux
 
 SHELL ["/bin/bash", "-c"]
 
-RUN echo '#!/bin/bash' >> /install-qt.sh && \
-    echo 'if [ `uname -m` == "aarch64" ]; then' >> /install-qt.sh && \
-    echo '    export QT_ARCH=linux_gcc_arm64' >> /install-qt.sh && \
-    echo '    export QT_HOST=linux_arm64' >> /install-qt.sh && \
-    echo 'fi' >> /install-qt.sh && \
-    echo 'echo Installing Qt ${QT_VERSION} for ${QT_ARCH} on ${QT_HOST}' >> /install-qt.sh && \
-    echo 'aqt install-qt ${QT_HOST} desktop ${QT_VERSION} ${QT_ARCH} \' >> /install-qt.sh && \
-    echo '-m $(for mod in $(aqt list-qt ${QT_HOST} desktop --modules ${QT_VERSION} ${QT_ARCH}); \' >> /install-qt.sh && \
-    echo 'do [[ "$mod" != *debug_info* ]] && echo -n "$mod "; done) --outputdir /qt' >> /install-qt.sh
 
-RUN chmod +x /install-qt.sh && /install-qt.sh
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+      export QT_ARCH=linux_gcc_arm64; \
+      export QT_HOST=linux_arm64; \
+    fi && \
+    aqt install-qt ${QT_HOST} desktop ${QT_VERSION} ${QT_ARCH} \
+    -m $(for mod in $(aqt list-qt ${QT_HOST} desktop --modules ${QT_VERSION} ${QT_ARCH}); \
+    do [[ "$mod" != *debug_info* ]] && echo -n "$mod "; done) --outputdir /qt; 
 
 FROM liyaosong/ubuntu:noble AS final
+
+ARG TARGETARCH
+ARG QT_VERSION=6.8.3
 
 COPY --from=qt-builder /qt /home/qt
 # 安装Qt的先决条件
@@ -61,20 +62,26 @@ USER qt
 
 WORKDIR /home/qt
 
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+      ln -s /home/qt/${QT_VERSION}/gcc_arm64 /home/qt/${QT_VERSION}/gcc_64; \
+    fi
+
 FROM scratch
 
-COPY --from=final / /
-
+ARG TARGETARCH
 ARG QT_VERSION=6.8.3
+
+COPY --from=final / /
 
 LABEL maintainer="liyaosong <liyaosong1@qq.com>"
 LABEL version="${QT_VERSION}"
 LABEL description="Qt version ${QT_VERSION}."
 
+USER qt
+WORKDIR /home/qt
 
 # 设置Qt环境变量
-
-ENV QT_DIR="$(if [ \"$(uname -m)\" = \"aarch64\" ]; then echo /home/qt/${QT_VERSION}/gcc_arm64; else echo /home/qt/${QT_VERSION}/gcc_64; fi)"
+ENV QT_DIR=/home/qt/${QT_VERSION}/gcc_64
 ENV PATH=$QT_DIR/bin:$PATH
 ENV LD_LIBRARY_PATH=$QT_DIR/lib
 ENV DISPLAY=host.docker.internal:0
