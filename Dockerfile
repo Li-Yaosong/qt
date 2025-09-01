@@ -15,13 +15,13 @@ RUN echo '#!/bin/bash' >> /install-qt.sh && \
     echo 'echo Installing Qt ${QT_VERSION} for ${QT_ARCH} on ${QT_HOST}' >> /install-qt.sh && \
     echo 'aqt install-qt ${QT_HOST} desktop ${QT_VERSION} ${QT_ARCH} \' >> /install-qt.sh && \
     echo '-m $(for mod in $(aqt list-qt ${QT_HOST} desktop --modules ${QT_VERSION} ${QT_ARCH}); \' >> /install-qt.sh && \
-    echo 'do [[ "$mod" != *debug_info* ]] && echo -n "$mod "; done) --outputdir /Qt' >> /install-qt.sh
+    echo 'do [[ "$mod" != *debug_info* ]] && echo -n "$mod "; done) --outputdir /qt' >> /install-qt.sh
 
 RUN chmod +x /install-qt.sh && /install-qt.sh
 
 FROM liyaosong/ubuntu:noble AS final
 
-COPY --from=qt-builder /Qt /home/Qt
+COPY --from=qt-builder /qt /home/qt
 # 安装Qt的先决条件
 
 RUN apt-get update && apt-get install -y git \
