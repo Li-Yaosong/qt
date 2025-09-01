@@ -19,7 +19,7 @@ RUN echo '#!/bin/bash' >> /install-qt.sh && \
 
 RUN chmod +x /install-qt.sh && /install-qt.sh
 
-FROM liyaosong/ubuntu:22.04 AS final
+FROM liyaosong/ubuntu:noble AS final
 
 COPY --from=qt-builder /Qt /home/Qt
 # 安装Qt的先决条件
