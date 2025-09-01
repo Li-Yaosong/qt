@@ -72,7 +72,7 @@ WORKDIR /home/qt
 
 # 设置Qt环境变量
 
-ENV QT_DIR=/home/qt/${QT_VERSION}/gcc_64
+ENV QT_DIR="$(if [ \"$(uname -m)\" = \"aarch64\" ]; then echo /home/qt/${QT_VERSION}/gcc_arm64; else echo /home/qt/${QT_VERSION}/gcc_64; fi)"
 ENV PATH=$QT_DIR/bin:$PATH
 ENV LD_LIBRARY_PATH=$QT_DIR/lib
 ENV DISPLAY=host.docker.internal:0
