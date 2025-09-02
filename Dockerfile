@@ -123,7 +123,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgstreamer-plugins-bad1.0-dev \
     libmariadb-dev-compat \
     unixodbc-dev \
-    libpq-dev && apt-get autoremove -y && apt-get clean && \
+    libpq-dev \
+    python3-pip && \
+    pip install --no-cache-dir spdx-tools ntia-conformance-checker sbom2doc sbomaudit reuse --break-system-packages && \
+    pip install --no-cache-dir --upgrade setuptools --break-system-packages && \
+    apt-get autoremove -y && apt-get clean && \
     rm -rf \
     /var/lib/apt/lists/* \
     /tmp/* \
