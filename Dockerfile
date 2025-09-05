@@ -4,6 +4,7 @@ ARG VERSION="Ubuntu 24.04"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    sccache \
     cmake \
     ninja-build \
     git \
@@ -125,7 +126,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unixodbc-dev \
     libpq-dev \
     python3-pip && \
-    pip install --no-cache-dir spdx-tools ntia-conformance-checker sbom2doc sbomaudit reuse --break-system-packages && \
+    pip install --no-cache-dir spdx-tools ntia-conformance-checker sbom2doc sbomaudit reuse html5lib --break-system-packages && \
     pip install --no-cache-dir --upgrade setuptools --break-system-packages && \
     apt-get autoremove -y && apt-get clean && \
     rm -rf \
