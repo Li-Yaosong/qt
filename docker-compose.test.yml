@@ -1,0 +1,10 @@
+services:
+  sut:
+    build: .
+    command:
+    - bash
+    - -lc
+    - |
+        wget https://download.qt.io/official_releases/qt/6.8/6.8.3/single/qt-everywhere-src-6.8.3.tar.xz
+        tar -xf qt-everywhere-src-6.8.3.tar.xz && cd qt-everywhere-src-6.8.3
+        ./configure -nomake examples -release -force-debug-info -separate-debug-info -headersclean -qt-libjpeg -qt-libpng -qt-pcre -qt-harfbuzz -qt-doubleconversion -no-libudev -bundled-xcb-xinput -qpa offscreen\;xcb -- -DOpenGL_GL_PREFERENCE=LEGACY -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DQT_GENERATE_SBOM=ON -DQT_GENERATE_SOURCE_SBOM=ON -DQT_SBOM_PYTHON_INTERP= -DQT_SBOM_PYTHON_APPS_PATH=/usr/local/bin -DQT_LINT_SOURCE_SBOM=ON -DQT_INTERNAL_SBOM_DEFAULT_CHECKS=ON -DQT_INTERNAL_SBOM_AUDIT=ON -DQT_INTERNAL_SBOM_AUDIT_NO_ERROR=ON -DQT_BUILD_TESTS=OFF -DCMAKE_AUTOGEN_VERBOSE=ON -DCMAKE_MESSAGE_LOG_LEVEL=STATUS -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -DCMAKE_INSTALL_PREFIX:PATH=/tqtc/install
