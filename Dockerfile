@@ -1,6 +1,6 @@
-FROM liyaosong/ubuntu:noble AS base
+FROM debian:bookworm-slim AS base
 
-ARG VERSION="Ubuntu 24.04"
+ARG VERSION="Debian 12"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -146,4 +146,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 LABEL maintainer="liyaosong <liyaosong1@qq.com>"
 LABEL version=${VERSION}
-LABEL description="Qt source build Docker image based on Ubuntu 24.04."
+LABEL description="Qt source build Docker image based on Debian 12."
